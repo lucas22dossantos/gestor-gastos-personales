@@ -51,13 +51,19 @@ Este proyecto me sirve para reforzar:
 ## Estructura de base de datos (borrador inicial, sujeto a ajuste)
 
 ```sql
+CREATE TABLE categorias (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL UNIQUE
+);
+
 CREATE TABLE gastos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     descripcion VARCHAR(255) NOT NULL,
     monto DECIMAL(10,2) NOT NULL,
-    categoria VARCHAR(100) NOT NULL,
+    categoria_id INT NOT NULL,
     fecha DATE NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (categoria_id) REFERENCES categorias(id)
 );
 ```
 
