@@ -37,4 +37,10 @@ class Database
         $stmt->execute($params);
         return $stmt;
     }
+
+    // Devuelve el ID generado por la última inserción.
+    public static function lastInsertId(): string
+    {
+        return self::getConnection()->lastInsertId();
+    }
 }
