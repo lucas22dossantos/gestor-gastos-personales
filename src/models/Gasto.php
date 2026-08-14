@@ -1,6 +1,6 @@
 <?php
 
-
+require_once __DIR__ . '/Database.php';
 class Gasto
 {
     // ID del gasto. Puede ser null mientras aún no existe en la BD.
@@ -26,5 +26,18 @@ class Gasto
         $this->monto = $monto;
         $this->categoria_id = $categoria_id;
         $this->fecha = $fecha;
+    }
+
+    // Guarda este gasto en la base de datos.
+    // Luego actualiza el id del objeto con el ID generado por MySQL.
+    public function guardar(): void
+    {
+        $sql = "INSERT INTO gastos (descripcion, monto, categoria_id, fecha) VALUES (?, ?, ?, ?)";
+
+        $params = [$this->descripcion, $this->monto, $this->categoria_id, $this->fecha];
+
+        Database::query($sql, $params);
+
+        $this->id = Database::lastInsertId();
     }
 }
