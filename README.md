@@ -31,8 +31,8 @@ Este proyecto me sirve para reforzar:
 
 - [x] Registrar un gasto: descripción, monto, categoría, fecha
 - [x] Listar todos los gastos registrados
-- [ ] Editar un gasto existente
-- [ ] Eliminar un gasto
+- [x] Editar un gasto existente
+- [x] Eliminar un gasto
 - [ ] Validación de campos obligatorios (frontend Y backend)
 
 ### Nivel 2 — Cálculos y organización

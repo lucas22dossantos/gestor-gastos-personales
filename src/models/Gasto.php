@@ -64,12 +64,20 @@ class Gasto
         return $gastos;
     }
 
-    public function actualizar()
+    public function actualizar(): void
     {
         $sql = "UPDATE gastos SET descripcion = ?, monto = ?, categoria_id = ?, fecha = ? WHERE id = ?";
 
         $params = [$this->descripcion, $this->monto, $this->categoria_id, $this->fecha, $this->id];
 
+        Database::query($sql, $params);
+    }
+
+    public function eliminar(): void
+    {
+
+        $sql = 'DELETE FROM gastos WHERE id = ?';
+        $params = [$this->id];
         Database::query($sql, $params);
     }
 }
