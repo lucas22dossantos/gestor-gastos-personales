@@ -63,4 +63,13 @@ class Gasto
 
         return $gastos;
     }
+
+    public function actualizar()
+    {
+        $sql = "UPDATE gastos SET descripcion = ?, monto = ?, categoria_id = ?, fecha = ? WHERE id = ?";
+
+        $params = [$this->descripcion, $this->monto, $this->categoria_id, $this->fecha, $this->id];
+
+        Database::query($sql, $params);
+    }
 }
