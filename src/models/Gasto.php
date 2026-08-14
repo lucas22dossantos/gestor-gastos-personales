@@ -40,4 +40,27 @@ class Gasto
 
         $this->id = Database::lastInsertId();
     }
+
+
+    public static function listarTodos(): array
+    {
+        $sql = "SELECT * FROM gastos";
+        $stmt = Database::query($sql);
+        $filas = $stmt->fetchAll();
+        $gastos = [];
+
+        foreach ($filas as $fila) {
+
+            $gastos[] = new Gasto(
+
+                id: $fila['id'],
+                descripcion: $fila['descripcion'],
+                monto: $fila['monto'],
+                categoria_id: $fila['categoria_id'],
+                fecha: $fila['fecha']
+            );
+        }
+
+        return $gastos;
+    }
 }

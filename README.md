@@ -29,8 +29,8 @@ Este proyecto me sirve para reforzar:
 
 ### Nivel 1 — CRUD básico
 
-- [ ] Registrar un gasto: descripción, monto, categoría, fecha
-- [ ] Listar todos los gastos registrados
+- [x] Registrar un gasto: descripción, monto, categoría, fecha
+- [x] Listar todos los gastos registrados
 - [ ] Editar un gasto existente
 - [ ] Eliminar un gasto
 - [ ] Validación de campos obligatorios (frontend Y backend)
