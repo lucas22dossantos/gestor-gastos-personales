@@ -1,24 +1,21 @@
 <?php
 
 require_once __DIR__ . '/Database.php';
+
+/**
+ * Modelo que representa un gasto personal registrado por el usuario.
+ */
 class Gasto
 {
-    // ID del gasto. Puede ser null mientras aún no existe en la BD.
     public ?int $id;
-
-    // Descripción breve del gasto, por ejemplo: 'Supermercado'.
     public string $descripcion;
-
-    // Monto del gasto. Se guarda como decimal con dos decimales.
     public float $monto;
-
-    // ID de la categoría a la que pertenece el gasto.
     public int $categoria_id;
-
-    // Fecha en la que se registró el gasto.
     public string $fecha;
 
-    // Constructor: recibe los datos del gasto y los guarda en el objeto.
+    /**
+     * Crea un nuevo gasto con los datos básicos.
+     */
     public function __construct(?int $id, string $descripcion, float $monto, int $categoria_id, string $fecha)
     {
         $this->id = $id;
@@ -28,20 +25,25 @@ class Gasto
         $this->fecha = $fecha;
     }
 
-    // Guarda este gasto en la base de datos.
-    // Luego actualiza el id del objeto con el ID generado por MySQL.
+    /**
+     * Guarda el gasto en la base de datos.
+     *
+     * @throws InvalidArgumentException si los datos no son válidos.
+     */
     public function guardar(): void
     {
-        $sql = "INSERT INTO gastos (descripcion, monto, categoria_id, fecha) VALUES (?, ?, ?, ?)";
+        $this->validar();
 
+        $sql = "INSERT INTO gastos (descripcion, monto, categoria_id, fecha) VALUES (?, ?, ?, ?)";
         $params = [$this->descripcion, $this->monto, $this->categoria_id, $this->fecha];
 
         Database::query($sql, $params);
-
-        $this->id = Database::lastInsertId();
+        $this->id = (int) Database::lastInsertId();
     }
 
-
+    /**
+     * Devuelve la lista completa de gastos.
+     */
     public static function listarTodos(): array
     {
         $sql = "SELECT * FROM gastos";
@@ -50,9 +52,7 @@ class Gasto
         $gastos = [];
 
         foreach ($filas as $fila) {
-
             $gastos[] = new Gasto(
-
                 id: $fila['id'],
                 descripcion: $fila['descripcion'],
                 monto: $fila['monto'],
@@ -64,20 +64,59 @@ class Gasto
         return $gastos;
     }
 
+    /**
+     * Actualiza un gasto existente por su id.
+     *
+     * @throws InvalidArgumentException si los datos no son válidos.
+     */
     public function actualizar(): void
     {
-        $sql = "UPDATE gastos SET descripcion = ?, monto = ?, categoria_id = ?, fecha = ? WHERE id = ?";
+        $this->validar();
 
+        $sql = "UPDATE gastos SET descripcion = ?, monto = ?, categoria_id = ?, fecha = ? WHERE id = ?";
         $params = [$this->descripcion, $this->monto, $this->categoria_id, $this->fecha, $this->id];
 
         Database::query($sql, $params);
     }
 
+    /**
+     * Elimina el gasto actual según su id.
+     */
     public function eliminar(): void
     {
-
         $sql = 'DELETE FROM gastos WHERE id = ?';
         $params = [$this->id];
+
         Database::query($sql, $params);
+    }
+
+    /**
+     * Valida que el gasto tenga datos correctos antes de persistirlo.
+     *
+     * @throws InvalidArgumentException si alguna regla no se cumple.
+     */
+    public function validar(): void
+    {
+        if (trim($this->descripcion) === '') {
+            throw new InvalidArgumentException('La descripción no puede estar vacía.');
+        }
+
+        if (!is_numeric($this->monto) || $this->monto <= 0) {
+            throw new InvalidArgumentException('El monto debe ser un número positivo.');
+        }
+
+        if (!is_numeric($this->categoria_id) || $this->categoria_id <= 0) {
+            throw new InvalidArgumentException('La categoría debe ser un número válido.');
+        }
+
+        if (trim($this->fecha) === '') {
+            throw new InvalidArgumentException('La fecha no puede estar vacía.');
+        }
+
+        $fecha = DateTime::createFromFormat('Y-m-d', $this->fecha);
+
+        if ($fecha === false || $fecha->format('Y-m-d') !== $this->fecha) {
+            throw new InvalidArgumentException('La fecha debe tener el formato YYYY-MM-DD.');
+        }
     }
 }

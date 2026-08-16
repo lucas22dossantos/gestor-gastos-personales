@@ -33,7 +33,8 @@ Este proyecto me sirve para reforzar:
 - [x] Listar todos los gastos registrados
 - [x] Editar un gasto existente
 - [x] Eliminar un gasto
-- [ ] Validación de campos obligatorios (frontend Y backend)
+- [x] Validación de campos obligatorios (backend)
+- [ ] Validación de campos obligatorios (frontend)
 
 ### Nivel 2 — Cálculos y organización
 
