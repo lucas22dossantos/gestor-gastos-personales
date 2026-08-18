@@ -88,5 +88,5 @@ CREATE TABLE gastos (
 
 ## Estado del proyecto
 
-🚧 En construcción — proyecto personal de práctica, construido de a poco mientras
-sigo aprendiendo desarrollo web full-stack.
+✅ Backend completo (API REST + CRUD) probado y funcionando con XAMPP.
+🚧 Falta: frontend (HTML/CSS/JS) para consumir la API.
