@@ -25,7 +25,7 @@ async function cargarGastos() {
             <td>${gasto.fecha}</td>
             <td>
                 <button>Editar</button>
-                <button>Eliminar</button>
+                <button onclick="eliminarGasto(${gasto.id})" >Eliminar</button>
             </td>
         </tr>
     `;
@@ -50,6 +50,23 @@ async function guardarGasto(descripcion, monto, categoria_id, fecha) {
 
   const data = await response.json();
   console.log(data);
+}
+
+async function eliminarGasto(id) {
+  const response = await fetch("src/controllers/api.php", {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      id: id,
+    }),
+  });
+
+  const data = await response.json();
+  console.log(data);
+
+  await cargarGastos();
 }
 
 document
