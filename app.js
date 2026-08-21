@@ -1,3 +1,4 @@
+// Mapa local para mostrar el nombre de cada categoría recibida desde la API.
 const categorias = {
   1: "Vivienda",
   2: "Alimento",
@@ -7,10 +8,9 @@ const categorias = {
   6: "Otros",
 };
 
+// Obtiene los gastos de la API y reconstruye las filas de la tabla.
 async function cargarGastos() {
-  // ¿qué línea usarías para pedir los datos a tu api.php?
   const urlGastos = `src/controllers/api.php`;
-  // ¿qué línea usarías para convertir la respuesta a JSON?
   const response = await fetch(urlGastos);
   const data = await response.json();
 
@@ -34,6 +34,7 @@ async function cargarGastos() {
   });
 }
 
+// Envía un nuevo gasto al backend mediante una petición POST.
 async function guardarGasto(descripcion, monto, categoria_id, fecha) {
   const response = await fetch("src/controllers/api.php", {
     method: "POST",
@@ -52,6 +53,7 @@ async function guardarGasto(descripcion, monto, categoria_id, fecha) {
   console.log(data);
 }
 
+// Elimina un gasto por su identificador mediante una petición DELETE.
 async function eliminarGasto(id) {
   const response = await fetch("src/controllers/api.php", {
     method: "DELETE",
@@ -69,6 +71,7 @@ async function eliminarGasto(id) {
   await cargarGastos();
 }
 
+// Copia los datos del gasto seleccionado en los campos del formulario para editarlo.
 function cargarGastoEnFormulario(id, descripcion, monto, categoria_id, fecha) {
   document.getElementById("gasto-id").value = id;
   document.getElementById("descripcion").value = descripcion;
@@ -77,6 +80,7 @@ function cargarGastoEnFormulario(id, descripcion, monto, categoria_id, fecha) {
   document.getElementById("fecha").value = fecha;
 }
 
+// Envía los cambios de un gasto existente mediante una petición PUT.
 async function actualizarGasto(id, descripcion, monto, categoria_id, fecha) {
   const response = await fetch("src/controllers/api.php", {
     method: "PUT",
@@ -107,13 +111,30 @@ document
     const categoria_id = document.getElementById("categoria_id").value;
     const fecha = document.getElementById("fecha").value;
 
-    // await guardarGasto(descripcion, monto, categoria_id, fecha);
+    // Valida los campos antes de enviar datos al backend.
+    if (descripcion.trim() === "") {
+      alert("La descripción no puede estar vacía.");
+      return;
+    }
+
+    if (monto.trim() === "" || Number(monto) <= 0) {
+      alert("El monto debe ser un número mayor a cero.");
+      return;
+    }
+
+    if (categoria_id.trim() === "" || Number(categoria_id) <= 0) {
+      alert("La categorias no puede estar vacía.");
+      return;
+    }
+
+    if (fecha.trim() === "") {
+      alert("La fecha no puede estar vacía.");
+      return;
+    }
 
     if (id === "") {
-      // ¿qué función llamarías acá, para el caso "gasto nuevo"?
       await guardarGasto(descripcion, monto, categoria_id, fecha);
     } else {
-      // ¿qué función llamarías acá, para el caso "edición"?
       await actualizarGasto(id, descripcion, monto, categoria_id, fecha);
     }
 

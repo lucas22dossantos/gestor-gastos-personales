@@ -34,7 +34,7 @@ Este proyecto me sirve para reforzar:
 - [x] Editar un gasto existente
 - [x] Eliminar un gasto
 - [x] Validación de campos obligatorios (backend)
-- [ ] Validación de campos obligatorios (frontend)
+- [x] Validación de campos obligatorios (frontend)
 
 ### Nivel 2 — Cálculos y organización
 
