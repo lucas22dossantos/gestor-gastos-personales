@@ -24,7 +24,7 @@ async function cargarGastos() {
             <td>${categorias[gasto.categoria_id]}</td>
             <td>${gasto.fecha}</td>
             <td>
-                <button>Editar</button>
+                <button onclick="cargarGastoEnFormulario(${gasto.id}, '${gasto.descripcion}', ${gasto.monto}, ${gasto.categoria_id}, '${gasto.fecha}')">Editar</button>
                 <button onclick="eliminarGasto(${gasto.id})" >Eliminar</button>
             </td>
         </tr>
@@ -69,19 +69,56 @@ async function eliminarGasto(id) {
   await cargarGastos();
 }
 
+function cargarGastoEnFormulario(id, descripcion, monto, categoria_id, fecha) {
+  document.getElementById("gasto-id").value = id;
+  document.getElementById("descripcion").value = descripcion;
+  document.getElementById("monto").value = monto;
+  document.getElementById("categoria_id").value = categoria_id;
+  document.getElementById("fecha").value = fecha;
+}
+
+async function actualizarGasto(id, descripcion, monto, categoria_id, fecha) {
+  const response = await fetch("src/controllers/api.php", {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      id: id,
+      descripcion: descripcion,
+      monto: monto,
+      categoria_id: categoria_id,
+      fecha: fecha,
+    }),
+  });
+
+  const data = await response.json();
+  console.log(data);
+}
+
 document
   .getElementById("form-gasto")
   .addEventListener("submit", async function (event) {
     event.preventDefault();
 
+    const id = document.getElementById("gasto-id").value;
     const descripcion = document.getElementById("descripcion").value;
     const monto = document.getElementById("monto").value;
     const categoria_id = document.getElementById("categoria_id").value;
     const fecha = document.getElementById("fecha").value;
 
-    await guardarGasto(descripcion, monto, categoria_id, fecha);
+    // await guardarGasto(descripcion, monto, categoria_id, fecha);
+
+    if (id === "") {
+      // ¿qué función llamarías acá, para el caso "gasto nuevo"?
+      await guardarGasto(descripcion, monto, categoria_id, fecha);
+    } else {
+      // ¿qué función llamarías acá, para el caso "edición"?
+      await actualizarGasto(id, descripcion, monto, categoria_id, fecha);
+    }
 
     cargarGastos();
+    document.getElementById("form-gasto").reset();
   });
 
 cargarGastos();
