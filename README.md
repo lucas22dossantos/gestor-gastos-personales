@@ -39,7 +39,7 @@ Este proyecto me sirve para reforzar:
 ### Nivel 2 — Cálculos y organización
 
 - [x] Mostrar el total gastado (suma de todos los gastos)
-- [ ] Agrupar y mostrar el total gastado por categoría
+- [x] Agrupar y mostrar el total gastado por categoría
 - [ ] Filtrar gastos por categoría
 - [ ] Filtrar gastos por rango de fechas
 

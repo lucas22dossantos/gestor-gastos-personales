@@ -19,6 +19,16 @@ async function cargarGastos() {
   // Acumula el monto de todos los gastos para mostrar el total.
   let total = 0;
 
+  // Guarda el total acumulado de cada categoría para mostrar el resumen.
+  const totalesPorCategoria = {
+    1: 0,
+    2: 0,
+    3: 0,
+    4: 0,
+    5: 0,
+    6: 0,
+  };
+
   data.forEach(function (gasto) {
     const fila = `
         <tr>
@@ -36,10 +46,20 @@ async function cargarGastos() {
     document.getElementById("cuerpo-tabla-gastos").innerHTML += fila;
 
     total = total + Number(gasto.monto);
+    totalesPorCategoria[gasto.categoria_id] += Number(gasto.monto);
   });
 
   // Actualiza el total mostrado en la interfaz con dos decimales.
   document.getElementById("total-gastado").innerHTML = total.toFixed(2);
+
+  // Vacía la lista antes de reconstruirla con los totales actualizados.
+  document.getElementById("lista-totales-categoria").innerHTML = "";
+
+  // Crea una fila de resumen para cada categoría registrada.
+  for (let clave in totalesPorCategoria) {
+    const item = `<li>${categorias[clave]}: $${totalesPorCategoria[clave].toFixed(2)}</li>`;
+    document.getElementById("lista-totales-categoria").innerHTML += item;
+  }
 }
 
 // Envía un nuevo gasto al backend mediante una petición POST.
