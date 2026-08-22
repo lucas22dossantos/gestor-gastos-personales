@@ -16,6 +16,9 @@ async function cargarGastos() {
 
   document.getElementById("cuerpo-tabla-gastos").innerHTML = "";
 
+  // Acumula el monto de todos los gastos para mostrar el total.
+  let total = 0;
+
   data.forEach(function (gasto) {
     const fila = `
         <tr>
@@ -31,7 +34,12 @@ async function cargarGastos() {
     `;
 
     document.getElementById("cuerpo-tabla-gastos").innerHTML += fila;
+
+    total = total + Number(gasto.monto);
   });
+
+  // Actualiza el total mostrado en la interfaz con dos decimales.
+  document.getElementById("total-gastado").innerHTML = total.toFixed(2);
 }
 
 // Envía un nuevo gasto al backend mediante una petición POST.
