@@ -36,11 +36,24 @@
       <button type="submit">Guardar gasto</button>
     </form>
 
+    <!-- Este valor se actualiza desde app.js según los gastos visibles. -->
     <h2>Total gastado: $<span id="total-gastado">0</span></h2>
 
+    <!-- app.js inserta aquí el total acumulado de cada categoría. -->
     <h3>Total por categoría:</h3>
     <ul id="lista-totales-categoria"></ul>
 
+    <!-- Al cambiar la categoría, app.js filtra los gastos mostrados en la tabla. -->
+    <label for="filtro-categoria">Filtrar por categoría</label>
+    <select id="filtro-categoria">
+      <option value="todas">Todas</option>
+      <option value="1">Vivienda</option>
+      <option value="2">Alimento</option>
+      <option value="3">Transporte</option>
+      <option value="4">Salud</option>
+      <option value="5">Entretenimiento</option>
+      <option value="6">Otros</option>
+    </select>
     <!-- Tabla donde se listan los gastos ya registrados -->
     <table id="tabla-gastos">
       <thead>

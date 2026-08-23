@@ -8,58 +8,54 @@ const categorias = {
   6: "Otros",
 };
 
-// Obtiene los gastos de la API y reconstruye las filas de la tabla.
-async function cargarGastos() {
-  const urlGastos = `src/controllers/api.php`;
-  const response = await fetch(urlGastos);
-  const data = await response.json();
+// Conserva todos los gastos descargados para poder aplicar filtros sin consultar
+// nuevamente la API.
+let data = [];
 
+// Renderiza una lista de gastos y actualiza sus totales en la interfaz.
+function mostrarGastos(listaGastos) {
   document.getElementById("cuerpo-tabla-gastos").innerHTML = "";
 
-  // Acumula el monto de todos los gastos para mostrar el total.
+  // Estos acumuladores se calculan sobre la lista completa o sobre el filtro activo.
   let total = 0;
+  const totalesPorCategoria = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 };
 
-  // Guarda el total acumulado de cada categoría para mostrar el resumen.
-  const totalesPorCategoria = {
-    1: 0,
-    2: 0,
-    3: 0,
-    4: 0,
-    5: 0,
-    6: 0,
-  };
-
-  data.forEach(function (gasto) {
+  listaGastos.forEach(function (gasto) {
     const fila = `
-        <tr>
-            <td>${gasto.descripcion}</td>
-            <td>${gasto.monto}</td>
-            <td>${categorias[gasto.categoria_id]}</td>
-            <td>${gasto.fecha}</td>
-            <td>
-                <button onclick="cargarGastoEnFormulario(${gasto.id}, '${gasto.descripcion}', ${gasto.monto}, ${gasto.categoria_id}, '${gasto.fecha}')">Editar</button>
-                <button onclick="eliminarGasto(${gasto.id})" >Eliminar</button>
-            </td>
-        </tr>
-    `;
-
+            <tr>
+                <td>${gasto.descripcion}</td>
+                <td>${gasto.monto}</td>
+                <td>${categorias[gasto.categoria_id]}</td>
+                <td>${gasto.fecha}</td>
+                <td>
+                    <button onclick="cargarGastoEnFormulario(${gasto.id}, '${gasto.descripcion}', ${gasto.monto}, ${gasto.categoria_id}, '${gasto.fecha}')">Editar</button>
+                    <button onclick="eliminarGasto(${gasto.id})">Eliminar</button>
+                </td>
+            </tr>
+        `;
     document.getElementById("cuerpo-tabla-gastos").innerHTML += fila;
 
-    total = total + Number(gasto.monto);
+    total += Number(gasto.monto);
     totalesPorCategoria[gasto.categoria_id] += Number(gasto.monto);
   });
 
-  // Actualiza el total mostrado en la interfaz con dos decimales.
+  // Actualiza el total general y el resumen de cada categoría.
   document.getElementById("total-gastado").innerHTML = total.toFixed(2);
 
-  // Vacía la lista antes de reconstruirla con los totales actualizados.
   document.getElementById("lista-totales-categoria").innerHTML = "";
-
-  // Crea una fila de resumen para cada categoría registrada.
   for (let clave in totalesPorCategoria) {
     const item = `<li>${categorias[clave]}: $${totalesPorCategoria[clave].toFixed(2)}</li>`;
     document.getElementById("lista-totales-categoria").innerHTML += item;
   }
+}
+
+// Obtiene los gastos de la API y reconstruye las filas de la tabla.
+async function cargarGastos() {
+  const urlGastos = `src/controllers/api.php`;
+  const response = await fetch(urlGastos);
+  data = await response.json();
+
+  mostrarGastos(data);
 }
 
 // Envía un nuevo gasto al backend mediante una petición POST.
@@ -168,6 +164,23 @@ document
 
     cargarGastos();
     document.getElementById("form-gasto").reset();
+  });
+
+document
+  .getElementById("filtro-categoria")
+  .addEventListener("change", function () {
+    // Filtra la copia local y vuelve a renderizar la tabla y sus totales.
+    const categoriaSeleccionada =
+      document.getElementById("filtro-categoria").value;
+
+    if (categoriaSeleccionada === "todas") {
+      mostrarGastos(data);
+    } else {
+      const gastosFiltrados = data.filter(function (gasto) {
+        return gasto.categoria_id == categoriaSeleccionada;
+      });
+      mostrarGastos(gastosFiltrados);
+    }
   });
 
 cargarGastos();
