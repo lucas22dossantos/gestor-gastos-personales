@@ -40,8 +40,8 @@ Este proyecto me sirve para reforzar:
 
 - [x] Mostrar el total gastado (suma de todos los gastos)
 - [x] Agrupar y mostrar el total gastado por categoría
-- [ ] Filtrar gastos por categoría
-- [ ] Filtrar gastos por rango de fechas
+- [x] Filtrar gastos por categoría
+- [x] Filtrar gastos por rango de fechas
 
 ### Nivel 3 — Extra
 

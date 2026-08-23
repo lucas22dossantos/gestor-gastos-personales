@@ -183,4 +183,22 @@ document
     }
   });
 
+document
+  .getElementById("btn-filtrar-fecha")
+  .addEventListener("click", function () {
+    const desde = document.getElementById("filtro-desde").value;
+    const hasta = document.getElementById("filtro-hasta").value;
+
+    if (desde === "" && hasta === "") {
+      mostrarGastos(data);
+      return;
+    }
+
+    const gastosFiltrados = data.filter(function (gasto) {
+      return gasto.fecha >= desde && gasto.fecha <= hasta;
+    });
+
+    mostrarGastos(gastosFiltrados);
+  });
+
 cargarGastos();
