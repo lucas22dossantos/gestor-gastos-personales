@@ -42,6 +42,7 @@ function mostrarGastos(listaGastos) {
   // Actualiza el total general y el resumen de cada categoría.
   document.getElementById("total-gastado").innerHTML = total.toFixed(2);
 
+  // Limpia y reconstruye el resumen para que coincida con los gastos visibles.
   document.getElementById("lista-totales-categoria").innerHTML = "";
   for (let clave in totalesPorCategoria) {
     const item = `<li>${categorias[clave]}: $${totalesPorCategoria[clave].toFixed(2)}</li>`;
@@ -156,6 +157,7 @@ document
       return;
     }
 
+    // Decide si la operación debe crear un gasto o actualizar uno existente.
     if (id === "") {
       await guardarGasto(descripcion, monto, categoria_id, fecha);
     } else {
@@ -186,14 +188,17 @@ document
 document
   .getElementById("btn-filtrar-fecha")
   .addEventListener("click", function () {
+    // Filtra los gastos guardados usando las fechas ingresadas por el usuario.
     const desde = document.getElementById("filtro-desde").value;
     const hasta = document.getElementById("filtro-hasta").value;
 
+    // Si no se indican fechas, vuelve a mostrar todos los gastos.
     if (desde === "" && hasta === "") {
       mostrarGastos(data);
       return;
     }
 
+    // Las fechas ISO (AAAA-MM-DD) se pueden comparar directamente como texto.
     const gastosFiltrados = data.filter(function (gasto) {
       return gasto.fecha >= desde && gasto.fecha <= hasta;
     });
