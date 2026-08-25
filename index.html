@@ -7,79 +7,125 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <h1>Gestor de Gastos Personales</h1>
+    <header class="app-header">
+      <h1>Gestor de Gastos Personales</h1>
+      <p class="app-subtitle">Libro de registro de gastos</p>
+    </header>
 
-    <!-- Formulario para registrar o editar un gasto -->
-    <form id="form-gasto">
-      <input type="hidden" id="gasto-id" />
+    <main class="layout">
+      <!-- Formulario para registrar o editar un gasto -->
+      <section class="panel panel-form">
+        <h2 class="panel-title">Nuevo gasto</h2>
+        <form id="form-gasto">
+          <input type="hidden" id="gasto-id" />
 
-      <label for="descripcion">Descripción</label>
-      <input type="text" id="descripcion" required />
+          <div class="field">
+            <label for="descripcion">Descripción</label>
+            <input type="text" id="descripcion" required />
+          </div>
 
-      <label for="monto">Monto</label>
-      <input type="number" id="monto" step="0.01" required />
+          <div class="field">
+            <label for="monto">Monto</label>
+            <input type="number" id="monto" step="0.01" min="0.01" required />
+          </div>
 
-      <label for="categoria_id">Categoría</label>
-      <select id="categoria_id" required>
-        <option value="">Seleccionar...</option>
-        <option value="1">Vivienda</option>
-        <option value="2">Alimento</option>
-        <option value="3">Transporte</option>
-        <option value="4">Salud</option>
-        <option value="5">Entretenimiento</option>
-        <option value="6">Otros</option>
-      </select>
+          <div class="field">
+            <label for="categoria_id">Categoría</label>
+            <select id="categoria_id" required>
+              <option value="">Seleccionar...</option>
+              <option value="1">Vivienda</option>
+              <option value="2">Alimento</option>
+              <option value="3">Transporte</option>
+              <option value="4">Salud</option>
+              <option value="5">Entretenimiento</option>
+              <option value="6">Otros</option>
+            </select>
+          </div>
 
-      <label for="fecha">Fecha</label>
-      <input type="date" id="fecha" required />
+          <div class="field">
+            <label for="fecha">Fecha</label>
+            <input type="date" id="fecha" required />
+          </div>
 
-      <button type="submit">Guardar gasto</button>
-    </form>
+          <button type="submit" class="btn btn-primary">Guardar gasto</button>
+        </form>
+      </section>
 
-    <!-- Este valor se actualiza desde app.js según los gastos visibles. -->
-    <h2>Total gastado: $<span id="total-gastado">0</span></h2>
+      <!-- Resumen: total general y total por categoría -->
+      <aside class="panel panel-summary">
+        <h2 class="panel-title">Resumen</h2>
+        <div class="summary-total">
+          <!-- Este valor se actualiza desde app.js según los gastos visibles. -->
+          <span class="summary-total-label">Total gastado</span>
+          <span class="summary-total-value"
+            >$<span id="total-gastado">0</span></span
+          >
+        </div>
 
-    <!-- app.js inserta aquí el total acumulado de cada categoría. -->
-    <h3>Total por categoría:</h3>
-    <ul id="lista-totales-categoria"></ul>
+        <!-- app.js inserta aquí el total acumulado de cada categoría. -->
+        <h3 class="summary-subtitle">Por categoría</h3>
+        <ul id="lista-totales-categoria" class="summary-list"></ul>
+      </aside>
 
-    <!-- Al cambiar la categoría, app.js filtra los gastos mostrados en la tabla. -->
-    <label for="filtro-categoria">Filtrar por categoría</label>
-    <select id="filtro-categoria">
-      <option value="todas">Todas</option>
-      <option value="1">Vivienda</option>
-      <option value="2">Alimento</option>
-      <option value="3">Transporte</option>
-      <option value="4">Salud</option>
-      <option value="5">Entretenimiento</option>
-      <option value="6">Otros</option>
-    </select>
+      <!-- Filtros -->
+      <section class="panel panel-filters">
+        <h2 class="panel-title">Filtros</h2>
 
-    <!-- Estos controles permiten filtrar los gastos por un rango de fechas. -->
-    <label for="filtro-desde">Desde</label>
-    <input type="date" id="filtro-desde" />
+        <div class="field">
+          <!-- Al cambiar la categoría, app.js filtra los gastos mostrados en la tabla. -->
+          <label for="filtro-categoria">Filtrar por categoría</label>
+          <select id="filtro-categoria">
+            <option value="todas">Todas</option>
+            <option value="1">Vivienda</option>
+            <option value="2">Alimento</option>
+            <option value="3">Transporte</option>
+            <option value="4">Salud</option>
+            <option value="5">Entretenimiento</option>
+            <option value="6">Otros</option>
+          </select>
+        </div>
 
-    <label for="filtro-hasta">Hasta</label>
-    <input type="date" id="filtro-hasta" />
+        <div class="filter-dates">
+          <!-- Estos controles permiten filtrar los gastos por un rango de fechas. -->
+          <div class="field">
+            <label for="filtro-desde">Desde</label>
+            <input type="date" id="filtro-desde" />
+          </div>
 
-    <button id="btn-filtrar-fecha">Filtrar</button>
+          <div class="field">
+            <label for="filtro-hasta">Hasta</label>
+            <input type="date" id="filtro-hasta" />
+          </div>
 
-    <!-- Tabla donde se listan los gastos ya registrados -->
-    <table id="tabla-gastos">
-      <thead>
-        <tr>
-          <th>Descripción</th>
-          <th>Monto</th>
-          <th>Categoría</th>
-          <th>Fecha</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody id="cuerpo-tabla-gastos">
-        <!-- Acá se van a insertar las filas con JS, dinámicamente -->
-      </tbody>
-    </table>
+          <button id="btn-filtrar-fecha" class="btn btn-secondary">
+            Filtrar
+          </button>
+        </div>
+      </section>
 
+      <!-- Tabla de gastos -->
+      <section class="panel panel-table">
+        <h2 class="panel-title">Movimientos</h2>
+        <!-- Tabla donde se listan los gastos ya registrados -->
+        <table id="tabla-gastos">
+          <caption>
+            Lista de gastos registrados
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">Descripción</th>
+              <th scope="col">Monto</th>
+              <th scope="col">Categoría</th>
+              <th scope="col">Fecha</th>
+              <th scope="col">Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="cuerpo-tabla-gastos">
+            <!-- Acá se van a insertar las filas con JS, dinámicamente -->
+          </tbody>
+        </table>
+      </section>
+    </main>
     <script src="app.js"></script>
   </body>
 </html>
