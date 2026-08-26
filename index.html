@@ -65,6 +65,24 @@
         <!-- app.js inserta aquí el total acumulado de cada categoría. -->
         <h3 class="summary-subtitle">Por categoría</h3>
         <ul id="lista-totales-categoria" class="summary-list"></ul>
+
+        <!-- El presupuesto se guarda localmente y se usa para calcular el disponible. -->
+        <div class="field">
+          <label for="presupuesto">Presupuesto mensual</label>
+          <input
+            type="number"
+            id="presupuesto"
+            step="0.01"
+            placeholder="Ej: 200000"
+          />
+        </div>
+
+        <div class="summary-total">
+          <span class="summary-total-label">Disponible</span>
+          <span class="summary-total-value"
+            >$<span id="disponible">0</span></span
+          >
+        </div>
       </aside>
 
       <!-- Filtros -->

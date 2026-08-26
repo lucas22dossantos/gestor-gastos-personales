@@ -12,6 +12,15 @@ const categorias = {
 // nuevamente la API.
 let data = [];
 
+// Lee el presupuesto guardado en el navegador y lo muestra en el formulario.
+function cargarPresupuesto() {
+  const presupuestoGuardado = localStorage.getItem("presupuesto");
+
+  if (presupuestoGuardado !== null) {
+    document.getElementById("presupuesto").value = presupuestoGuardado;
+  }
+}
+
 // Renderiza una lista de gastos y actualiza sus totales en la interfaz.
 function mostrarGastos(listaGastos) {
   document.getElementById("cuerpo-tabla-gastos").innerHTML = "";
@@ -50,6 +59,34 @@ function mostrarGastos(listaGastos) {
   }
 }
 
+// Calcula cuánto presupuesto queda después de restar los gastos del mes actual.
+// También guarda el presupuesto en el navegador para conservarlo al recargar.
+function actualizarDisponible() {
+  const presupuesto = Number(document.getElementById("presupuesto").value) || 0;
+  const hoy = new Date();
+  const mesActual = hoy.getMonth() + 1;
+  const anioActual = hoy.getFullYear();
+  const mesTexto = String(mesActual).padStart(2, "0");
+  const mesActualString = `${anioActual}-${mesTexto}`;
+
+  const gastosDelMes = data.filter(function (gasto) {
+    return gasto.fecha.substring(0, 7) === mesActualString;
+  });
+
+  // localStorage conserva este valor en este navegador, sin enviarlo a la API.
+  localStorage.setItem("presupuesto", presupuesto);
+
+  let totalDelMes = 0;
+
+  gastosDelMes.forEach(function (gasto) {
+    totalDelMes += Number(gasto.monto);
+  });
+
+  const disponible = presupuesto - totalDelMes;
+
+  document.getElementById("disponible").innerHTML = disponible.toFixed(2);
+}
+
 // Obtiene los gastos de la API y reconstruye las filas de la tabla.
 async function cargarGastos() {
   const urlGastos = `src/controllers/api.php`;
@@ -57,6 +94,7 @@ async function cargarGastos() {
   data = await response.json();
 
   mostrarGastos(data);
+  actualizarDisponible();
 }
 
 // Envía un nuevo gasto al backend mediante una petición POST.
@@ -206,4 +244,11 @@ document
     mostrarGastos(gastosFiltrados);
   });
 
+document
+  .getElementById("presupuesto")
+  // Recalcula y guarda el presupuesto cada vez que cambia su valor.
+  .addEventListener("input", actualizarDisponible);
+
+// Recupera el presupuesto antes de cargar los gastos y calcular lo disponible.
+cargarPresupuesto();
 cargarGastos();

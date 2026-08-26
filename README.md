@@ -45,7 +45,7 @@ Este proyecto me sirve para reforzar:
 
 ### Nivel 3 — Extra
 
-- [ ] Definir un presupuesto mensual y mostrar cuánto queda disponible
+- [x] Definir un presupuesto mensual y mostrar cuánto queda disponible
 - [ ] Alerta visual si el gasto supera el presupuesto
 - [ ] Gráfico simple de gastos por categoría (barras con CSS o alguna librería liviana)
 
