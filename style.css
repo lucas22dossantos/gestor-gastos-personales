@@ -222,6 +222,17 @@ body {
   color: var(--color-verde-oscuro);
 }
 
+.disponible-negativo {
+  color: var(--color-alerta);
+}
+
+.alerta-presupuesto {
+  margin: 0.5rem 0 0;
+  font-size: 0.85rem;
+  color: var(--color-alerta);
+  font-weight: 600;
+}
+
 .summary-subtitle {
   margin: 0 0 0.75rem;
   font-size: 0.85rem;
