@@ -47,7 +47,7 @@ Este proyecto me sirve para reforzar:
 
 - [x] Definir un presupuesto mensual y mostrar cuánto queda disponible
 - [x] Alerta visual si el gasto supera el presupuesto
-- [ ] Gráfico simple de gastos por categoría (barras con CSS o alguna librería liviana)
+- [x] Gráfico simple de gastos por categoría (barras con CSS o alguna librería liviana)
 
 ## Estructura de base de datos (borrador inicial, sujeto a ajuste)
 
@@ -88,5 +88,6 @@ CREATE TABLE gastos (
 
 ## Estado del proyecto
 
-✅ Backend completo (API REST + CRUD) probado y funcionando con XAMPP.
-🚧 Falta: frontend (HTML/CSS/JS) para consumir la API.
+Proyecto completo — CRUD full-stack (HTML/CSS/JS + PHP + MySQL), con cálculos,
+filtros, presupuesto mensual y gráfico simple, construido desde cero como práctica
+personal.

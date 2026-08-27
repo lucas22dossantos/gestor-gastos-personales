@@ -57,6 +57,41 @@ function mostrarGastos(listaGastos) {
     const item = `<li>${categorias[clave]}: $${totalesPorCategoria[clave].toFixed(2)}</li>`;
     document.getElementById("lista-totales-categoria").innerHTML += item;
   }
+
+  mostrarGraficoCategorias(totalesPorCategoria);
+}
+
+// Genera una barra para cada categoría a partir de sus totales acumulados.
+function mostrarGraficoCategorias(totalesPorCategoria) {
+  // Busca el gasto más alto para usarlo como referencia del ancho de las barras.
+  let maximo = 0;
+
+  for (let clave in totalesPorCategoria) {
+    if (totalesPorCategoria[clave] > maximo) {
+      maximo = totalesPorCategoria[clave];
+    }
+  }
+
+  // Limpia el gráfico anterior antes de mostrar los valores actualizados.
+  document.getElementById("grafico-categorias").innerHTML = "";
+
+  for (let clave in totalesPorCategoria) {
+    // Calcula el ancho relativo; si no hay gastos, todas las barras quedan en cero.
+    const valor = totalesPorCategoria[clave];
+    const porcentaje = maximo > 0 ? (valor / maximo) * 100 : 0;
+
+    const fila = `
+            <div class="barra-fila">
+                <span class="barra-etiqueta">${categorias[clave]}</span>
+                <div class="barra-contenedor">
+                    <div class="barra-relleno" style="width: ${porcentaje}%;"></div>
+                </div>
+                <span class="barra-valor">$${valor.toFixed(2)}</span>
+            </div>
+        `;
+
+    document.getElementById("grafico-categorias").innerHTML += fila;
+  }
 }
 
 // Calcula cuánto presupuesto queda después de restar los gastos del mes actual.
@@ -85,19 +120,6 @@ function actualizarDisponible() {
   const disponible = presupuesto - totalDelMes;
 
   document.getElementById("disponible").innerHTML = disponible.toFixed(2);
-
-  if (disponible < 0) {
-    document
-      .getElementById("disponible-wrapper")
-      .classList.add("disponible-negativo");
-    document.getElementById("alerta-presupuesto").innerHTML =
-      " Superaste tu presupuesto mensual.";
-  } else {
-    document
-      .getElementById("disponible-wrapper")
-      .classList.remove("disponible-negativo");
-    document.getElementById("alerta-presupuesto").innerHTML = "";
-  }
 }
 
 // Obtiene los gastos de la API y reconstruye las filas de la tabla.

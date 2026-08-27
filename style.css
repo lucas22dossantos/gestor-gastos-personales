@@ -68,6 +68,10 @@ body {
   overflow-x: auto;
 }
 
+.panel-chart {
+  grid-column: 1 / -1;
+}
+
 @media (max-width: 720px) {
   body {
     padding: 1.25rem 0.75rem 3rem;
@@ -109,6 +113,48 @@ body {
     width: 100%;
     margin-top: 0.25rem;
   }
+}
+
+.grafico-categorias {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.barra-fila {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.barra-etiqueta {
+  width: 110px;
+  font-size: 0.85rem;
+  color: var(--color-tinta-suave);
+  flex-shrink: 0;
+}
+
+.barra-contenedor {
+  flex: 1;
+  background-color: var(--color-papel);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+  height: 22px;
+  overflow: hidden;
+}
+
+.barra-relleno {
+  height: 100%;
+  background-color: var(--color-verde);
+  transition: width 0.3s ease;
+}
+
+.barra-valor {
+  width: 90px;
+  text-align: right;
+  font-family: var(--fuente-mono);
+  font-size: 0.85rem;
+  flex-shrink: 0;
 }
 
 /* ===== Paneles ===== */
