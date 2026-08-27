@@ -120,6 +120,19 @@ function actualizarDisponible() {
   const disponible = presupuesto - totalDelMes;
 
   document.getElementById("disponible").innerHTML = disponible.toFixed(2);
+
+  if (disponible < 0) {
+    document
+      .getElementById("disponible-wrapper")
+      .classList.add("disponible-negativo");
+    document.getElementById("alerta-presupuesto").innerHTML =
+      "Superaste tu presupuesto mensual.";
+  } else {
+    document
+      .getElementById("disponible-wrapper")
+      .classList.remove("disponible-negativo");
+    document.getElementById("alerta-presupuesto").innerHTML = "";
+  }
 }
 
 // Obtiene los gastos de la API y reconstruye las filas de la tabla.
