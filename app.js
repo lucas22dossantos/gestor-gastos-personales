@@ -94,6 +94,24 @@ function mostrarGraficoCategorias(totalesPorCategoria) {
   }
 }
 
+function aplicarFiltros() {
+  const categoriaSeleccionada =
+    document.getElementById("filtro-categoria").value;
+  const desde = document.getElementById("filtro-desde").value;
+  const hasta = document.getElementById("filtro-hasta").value;
+
+  const gastosFiltrados = data.filter(function (gasto) {
+    return (
+      (desde === "" || gasto.fecha >= desde) &&
+      (hasta === "" || gasto.fecha <= hasta) &&
+      (categoriaSeleccionada === "todas" ||
+        gasto.categoria_id == categoriaSeleccionada)
+    );
+  });
+
+  mostrarGastos(gastosFiltrados);
+}
+
 // Calcula cuánto presupuesto queda después de restar los gastos del mes actual.
 // También guarda el presupuesto en el navegador para conservarlo al recargar.
 function actualizarDisponible() {
@@ -254,45 +272,14 @@ document
     document.getElementById("form-gasto").reset();
   });
 
+// Aplica conjuntamente los filtros de categoría y de rango de fechas.
 document
   .getElementById("filtro-categoria")
-  .addEventListener("change", function () {
-    // Filtra la copia local y vuelve a renderizar la tabla y sus totales.
-    const categoriaSeleccionada =
-      document.getElementById("filtro-categoria").value;
-
-    if (categoriaSeleccionada === "todas") {
-      mostrarGastos(data);
-    } else {
-      const gastosFiltrados = data.filter(function (gasto) {
-        return gasto.categoria_id == categoriaSeleccionada;
-      });
-      mostrarGastos(gastosFiltrados);
-    }
-  });
+  .addEventListener("change", aplicarFiltros);
 
 document
   .getElementById("btn-filtrar-fecha")
-  .addEventListener("click", function () {
-    // Filtra los gastos guardados usando las fechas ingresadas por el usuario.
-    const desde = document.getElementById("filtro-desde").value;
-    const hasta = document.getElementById("filtro-hasta").value;
-
-    // Si no se indican fechas, vuelve a mostrar todos los gastos.
-    if (desde === "" && hasta === "") {
-      mostrarGastos(data);
-      return;
-    }
-
-    const gastosFiltrados = data.filter(function (gasto) {
-      return (
-        (desde === "" || gasto.fecha >= desde) &&
-        (hasta === "" || gasto.fecha <= hasta)
-      );
-    });
-
-    mostrarGastos(gastosFiltrados);
-  });
+  .addEventListener("click", aplicarFiltros);
 
 document
   .getElementById("presupuesto")
