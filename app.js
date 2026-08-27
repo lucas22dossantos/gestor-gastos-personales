@@ -284,9 +284,11 @@ document
       return;
     }
 
-    // Las fechas ISO (AAAA-MM-DD) se pueden comparar directamente como texto.
     const gastosFiltrados = data.filter(function (gasto) {
-      return gasto.fecha >= desde && gasto.fecha <= hasta;
+      return (
+        (desde === "" || gasto.fecha >= desde) &&
+        (hasta === "" || gasto.fecha <= hasta)
+      );
     });
 
     mostrarGastos(gastosFiltrados);
